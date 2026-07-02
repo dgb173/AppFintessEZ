@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torso Progresión Inteligente</title>
+    <!-- CSS Estilos -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Lucide Icons para interfaz limpia -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js para las gráficas de 1RM -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <!-- Cabecera -->
+    <header>
+        <h1>Voz & Oídos</h1>
+        <div class="header-status" id="header-status-badge">
+            <i data-lucide="dumbbell"></i>
+            <span>Torso F2</span>
+        </div>
+    </header>
+
+    <!-- Contenido principal -->
+    <main>
+        
+        <!-- VISTA DE CONFIGURACIÓN INICIAL (Si no hay pesos cargados) -->
+        <section id="view-setup" class="view card setup-container">
+            <h2>Configuración del Mesociclo</h2>
+            <p class="setup-description">
+                Introduce los pesos iniciales en kg con los que vas a comenzar este bloque. La app iniciará automáticamente el entrenamiento en la semana de consolidación con el mínimo de repeticiones ($R_{min}$).
+            </p>
+            <form id="setup-form" onsubmit="event.preventDefault(); saveInitialWeights();">
+                <div class="setup-grid" id="setup-exercises-list">
+                    <!-- Rellenado dinámicamente desde JS -->
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i data-lucide="play-circle"></i>
+                    Comenzar Entrenamiento
+                </button>
+            </form>
+        </section>
+
+        <!-- VISTA ENTRENAMIENTO DE HOY -->
+        <section id="view-today" class="view">
+            <div class="workout-meta">
+                <div class="workout-title">Rutina de Torso</div>
+                <div class="workout-date" id="current-workout-date"></div>
+            </div>
+
+            <!-- Listado dinámico de ejercicios del entrenamiento activo -->
+            <div id="active-exercises-container"></div>
+
+            <!-- Botón de guardar entrenamiento -->
+            <button class="btn btn-primary" onclick="finishWorkout()" style="margin-top: 1.5rem;">
+                <i data-lucide="check-check"></i>
+                Terminar y Guardar Entrenamiento
+            </button>
+        </section>
+
+        <!-- VISTA DE PROGRESO / GRÁFICAS -->
+        <section id="view-progress" class="view">
+            <div class="card">
+                <div class="chart-header">
+                    <div class="chart-title">Evolución de Marcas (1RM)</div>
+                    <select id="chart-exercise-select" class="chart-select" onchange="renderProgressChart()">
+                        <!-- Rellenado dinámicamente -->
+                    </select>
+                </div>
+                <div style="position: relative; height:250px; width:100%;">
+                    <canvas id="progressChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 style="font-family: var(--font-heading); font-size: 1.1rem; margin-bottom: 1rem;">Historial de Entrenamientos</h3>
+                <div id="history-list-container" class="history-exercises-list">
+                    <p style="color: var(--text-muted); font-size: 0.9rem; text-align: center;">No hay entrenamientos guardados todavía.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- VISTA DE AJUSTES -->
+        <section id="view-settings" class="view card">
+            <h2 style="font-family: var(--font-heading); font-size: 1.3rem; margin-bottom: 1rem;">Ajustes del Sistema</h2>
+            
+            <div style="margin-bottom: 2rem;">
+                <h3 style="font-family: var(--font-heading); font-size: 1rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Editar Pesos / Objetivos Actuales</h3>
+                <div id="settings-exercises-list" style="display: flex; flex-direction: column; gap: 0.85rem;">
+                    <!-- Rellenado dinámicamente -->
+                </div>
+                <button class="btn btn-primary" onclick="saveManualAdjustments()" style="margin-top: 1rem;">
+                    <i data-lucide="save"></i>
+                    Guardar Ajustes Manuales
+                </button>
+            </div>
+
+            <hr style="border: none; border-top: 1px solid var(--border-color); margin-bottom: 2rem;">
+
+            <div>
+                <h3 style="font-family: var(--font-heading); font-size: 1rem; color: #ef4444; margin-bottom: 0.5rem;">Zona de Peligro</h3>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                    Al reiniciar la base de datos se perderán todas las marcas previas, el historial de entrenamientos y los pesos de trabajo actuales.
+                </p>
+                <button class="btn btn-secondary" onclick="confirmReset()" style="border-color: rgba(239, 68, 68, 0.4); color: #ef4444;">
+                    <i data-lucide="trash-2"></i>
+                    Reiniciar Base de Datos
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- NAVEGACIÓN INFERIOR (TABS) -->
+    <nav>
+        <button class="nav-item active" onclick="switchView('today')">
+            <i data-lucide="calendar"></i>
+            Hoy
+        </button>
+        <button class="nav-item" onclick="switchView('progress')">
+            <i data-lucide="trending-up"></i>
+            Progreso
+        </button>
+        <button class="nav-item" onclick="switchView('settings')">
+            <i data-lucide="settings"></i>
+            Ajustes
+        </button>
+    </nav>
+
+    <!-- WIDGET FLOTANTE DEL TEMPORIZADOR DE DESCANSO -->
+    <div class="timer-container" id="global-timer-widget" onclick="toggleTimerState()">
+        <div class="timer-circle-bg">
+            <svg class="timer-svg">
+                <circle cx="40" cy="40" r="34" class="timer-circle" id="timer-circle-progress" stroke-dasharray="213.6" stroke-dashoffset="0"></circle>
+            </svg>
+            <span class="timer-digits" id="timer-text-display">03:00</span>
+            <span class="timer-label" id="timer-status-label">Descanso</span>
+        </div>
+    </div>
+
+    <!-- MODAL PARA EDITAR REPETICIONES (Si falla o hace más) -->
+    <div class="modal-overlay" id="edit-reps-modal">
+        <div class="modal-content">
+            <h3 class="modal-title">Ajustar Repeticiones</h3>
+            <p class="modal-subtitle" id="edit-reps-subtitle">Indica cuántas repeticiones completaste realmente en esta serie.</p>
+            
+            <div class="number-selector">
+                <button class="btn-num" onclick="adjustModalReps(-1)"><i data-lucide="minus"></i></button>
+                <span class="num-display" id="modal-reps-value">6</span>
+                <button class="btn-num" onclick="adjustModalReps(1)"><i data-lucide="plus"></i></button>
+            </div>
+
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="closeRepsModal()">Cancelar</button>
+                <button class="btn btn-primary" onclick="saveRepsModalValue()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- OVERLAY DE RESUMEN DE PROGRESIÓN (Se muestra al guardar entrenamiento) -->
+    <div class="summary-overlay" id="progression-summary-overlay">
+        <div class="summary-card">
+            <i data-lucide="sparkles" style="width: 48px; height: 48px; color: var(--accent-cyan); margin-bottom: 1rem; display: inline-block;"></i>
+            <h2 class="summary-title">Entrenamiento Guardado</h2>
+            <p class="summary-subtitle">El algoritmo de Doble Progresión ha calculado tus nuevos objetivos:</p>
+            
+            <div class="summary-list" id="summary-progression-list">
+                <!-- Se rellena con JS -->
+            </div>
+
+            <button class="btn btn-primary" onclick="closeSummaryOverlay()">
+                <i data-lucide="chevron-right"></i>
+                Entendido
+            </button>
+        </div>
+    </div>
+
+    <!-- AUDIO DE ALERTA DE FIN DE TEMPORIZADOR (Generado de forma sintetizada por Web Audio API en JS) -->
+
+    <!-- Cargar base de datos local y lógica principal -->
+    <script src="database.js"></script>
+    <script src="app.js"></script>
+
+    <!-- Inicializar iconos Lucide -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
