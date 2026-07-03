@@ -1,0 +1,17 @@
+{
+  "name": "app-fitness-ez",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MesoTracker Natural con dashboard, progresion y sincronizacion local/web.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check app.js && node --check database.js && node --check server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "pg": "^8.13.1"
+  }
+}

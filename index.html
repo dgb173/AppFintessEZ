@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voz & Oídos - Sistema de Progresión Inteligente</title>
+    <title>MesoTracker Natural - Progresión de Cargas</title>
     <!-- CSS Estilos -->
     <link rel="stylesheet" href="styles.css">
     <!-- Lucide Icons para interfaz limpia -->
@@ -15,10 +15,10 @@
 
     <!-- Cabecera -->
     <header>
-        <h1>Voz & Oídos</h1>
+        <h1>MesoTracker Natural</h1>
         <div class="header-status" id="header-status-badge">
             <i data-lucide="dumbbell"></i>
-            <span>Torso F2</span>
+            <span id="header-status-text">Mesociclo activo</span>
         </div>
     </header>
 
@@ -29,7 +29,7 @@
         <section id="view-setup" class="view card setup-container">
             <h2>Configuración del Mesociclo</h2>
             <p class="setup-description">
-                Introduce los pesos iniciales en kg con los que vas a comenzar este bloque. La app iniciará automáticamente el entrenamiento en la semana de consolidación con el mínimo de repeticiones ($R_{min}$).
+                Introduce tus pesos iniciales en kg. La app usará los ejercicios del plan completo, descansos de 2 minutos, doble progresión por rangos y control de series semanales para avanzar carga durante mesociclos sucesivos.
             </p>
             <form id="setup-form" onsubmit="event.preventDefault(); saveInitialWeights();">
                 <div class="setup-grid" id="setup-exercises-list">
@@ -42,11 +42,230 @@
             </form>
         </section>
 
-        <!-- VISTA 1: ENTRENAMIENTO DE HOY -->
+        <!-- VISTA 1: DASHBOARD DIARIO -->
+        <section id="view-dashboard" class="view">
+            <div class="dashboard-hero card">
+                <div class="dashboard-hero-main">
+                    <div>
+                        <div class="control-label">Panel diario</div>
+                        <h2 id="dashboard-title">Estado físico del día</h2>
+                        <p id="dashboard-subtitle">Calendario, nutrición, pasos y entrenamiento sincronizados.</p>
+                    </div>
+                    <div class="readiness-ring">
+                        <span id="dashboard-score">0</span>
+                        <small>score</small>
+                    </div>
+                </div>
+                <div class="dashboard-kpis">
+                    <div class="dash-kpi">
+                        <span>Calorías</span>
+                        <strong id="dash-kcal">0</strong>
+                    </div>
+                    <div class="dash-kpi">
+                        <span>Carbohidratos</span>
+                        <strong id="dash-carbs">0g</strong>
+                    </div>
+                    <div class="dash-kpi">
+                        <span>Pasos objetivo</span>
+                        <strong id="dash-steps">0</strong>
+                    </div>
+                    <div class="dash-kpi">
+                        <span>Entreno</span>
+                        <strong id="dash-workout">-</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card setup-cta-card" id="dashboard-setup-card">
+                <h3 class="progress-section-title">
+                    <i data-lucide="sliders-horizontal" style="color: var(--accent-amber);"></i>
+                    Falta configurar cargas iniciales
+                </h3>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                    Puedes usar el dashboard y la dieta ya, pero la progresión de cargas necesita que metas tus pesos de partida una vez.
+                </p>
+                <button class="btn btn-primary" onclick="switchView('setup')">
+                    <i data-lucide="play-circle"></i>
+                    Configurar Pesos
+                </button>
+            </div>
+
+            <div class="abc-grid">
+                <div class="abc-card">
+                    <span>A</span>
+                    <strong id="abc-training-title">Entreno</strong>
+                    <p id="abc-training-text">Selecciona el día y ejecuta series.</p>
+                </div>
+                <div class="abc-card">
+                    <span>B</span>
+                    <strong id="abc-diet-title">Dieta</strong>
+                    <p id="abc-diet-text">Cumple kcal y proteína.</p>
+                </div>
+                <div class="abc-card">
+                    <span>C</span>
+                    <strong id="abc-activity-title">Actividad</strong>
+                    <p id="abc-activity-text">Cierra pasos y compensa cheat meal.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="progress-section-title">
+                    <i data-lucide="calendar-days" style="color: var(--accent-cyan);"></i>
+                    Calendario Inteligente
+                </h3>
+                <div class="dashboard-form-grid">
+                    <label class="settings-field">
+                        <span>Fecha</span>
+                        <input type="date" id="dashboard-date-input" onchange="changeDashboardDate(this.value)">
+                    </label>
+                    <label class="settings-field">
+                        <span>Tipo</span>
+                        <select id="dashboard-day-type" onchange="updateDashboardPlanFromUI(false)">
+                            <option value="entreno">Entreno</option>
+                            <option value="descanso">Descanso</option>
+                        </select>
+                    </label>
+                    <label class="settings-field">
+                        <span>Entreno</span>
+                        <select id="dashboard-workout-day" onchange="updateDashboardPlanFromUI(false)">
+                            <!-- Rellenado dinámicamente -->
+                        </select>
+                    </label>
+                    <label class="settings-field">
+                        <span>Actividad</span>
+                        <select id="dashboard-activity-level" onchange="updateDashboardPlanFromUI(false)">
+                            <!-- Rellenado dinámicamente -->
+                        </select>
+                    </label>
+                    <label class="settings-field">
+                        <span>Pasos previstos</span>
+                        <input type="number" id="dashboard-planned-steps" step="500" onchange="updateDashboardPlanFromUI(false)">
+                    </label>
+                    <label class="settings-field">
+                        <span>Cheat meal kcal</span>
+                        <input type="number" id="dashboard-cheat-calories" step="50" placeholder="0" onchange="updateDashboardPlanFromUI(false)">
+                    </label>
+                </div>
+                <button class="btn btn-primary" onclick="saveDashboardPlanFromUI()" style="margin-top: 1rem;">
+                    <i data-lucide="save"></i>
+                    Guardar Plan del Día
+                </button>
+            </div>
+
+            <div class="card">
+                <h3 class="progress-section-title">
+                    <i data-lucide="utensils" style="color: var(--accent-violet);"></i>
+                    Nutrición Autoregulada
+                </h3>
+                <div class="nutrition-dashboard-grid">
+                    <div>
+                        <div class="nutrition-number" id="dash-clean-kcal">0</div>
+                        <span>kcal limpias restantes</span>
+                    </div>
+                    <div>
+                        <div class="nutrition-number" id="dash-clean-carbs">0g</div>
+                        <span>carbohidratos limpios</span>
+                    </div>
+                    <div>
+                        <div class="nutrition-number" id="dash-protein">0g</div>
+                        <span>proteína fija</span>
+                    </div>
+                </div>
+                <div class="cheat-advice" id="dashboard-cheat-result"></div>
+            </div>
+
+            <div class="card">
+                <h3 class="progress-section-title">
+                    <i data-lucide="clipboard-pen" style="color: var(--accent-cyan);"></i>
+                    Apuntar Dieta Real
+                </h3>
+                <div class="dashboard-form-grid">
+                    <label class="settings-field">
+                        <span>Kcal comidas</span>
+                        <input type="number" id="diet-log-calories" step="25" placeholder="0">
+                    </label>
+                    <label class="settings-field">
+                        <span>Proteína g</span>
+                        <input type="number" id="diet-log-protein" step="5" placeholder="0">
+                    </label>
+                    <label class="settings-field">
+                        <span>Carbs g</span>
+                        <input type="number" id="diet-log-carbs" step="5" placeholder="0">
+                    </label>
+                    <label class="settings-field">
+                        <span>Grasas g</span>
+                        <input type="number" id="diet-log-fat" step="5" placeholder="0">
+                    </label>
+                    <label class="settings-field">
+                        <span>Peso mañana kg</span>
+                        <input type="number" id="diet-log-weight" step="0.1" placeholder="71.0">
+                    </label>
+                    <label class="settings-field">
+                        <span>Nota</span>
+                        <input type="text" id="diet-log-note" placeholder="hambre, energía...">
+                    </label>
+                </div>
+                <button class="btn btn-primary" onclick="saveNutritionLogFromDashboard()" style="margin-top: 1rem;">
+                    <i data-lucide="badge-check"></i>
+                    Puntuar Dieta
+                </button>
+                <div class="diet-score-box" id="dashboard-diet-score"></div>
+            </div>
+
+            <div class="card">
+                <h3 class="progress-section-title">
+                    <i data-lucide="chart-no-axes-combined" style="color: var(--accent-violet);"></i>
+                    Gráficos de Avance
+                </h3>
+                <div class="dashboard-chart-grid">
+                    <div>
+                        <div class="chart-title">Calorías y Carbohidratos</div>
+                        <div class="dashboard-chart-box">
+                            <canvas id="dashboardNutritionChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="chart-title">Peso y Fuerza</div>
+                        <div class="dashboard-chart-box">
+                            <canvas id="dashboardProgressChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="progress-section-title">
+                    <i data-lucide="list-checks" style="color: var(--accent-amber);"></i>
+                    Acciones Recomendadas
+                </h3>
+                <div id="dashboard-actions-list" class="actions-list"></div>
+                <button class="btn btn-secondary" onclick="selectDashboardWorkoutAndTrain()" style="margin-top: 1rem;">
+                    <i data-lucide="dumbbell"></i>
+                    Ir al Entreno Programado
+                </button>
+            </div>
+        </section>
+
+        <!-- VISTA 2: ENTRENAMIENTO DE HOY -->
         <section id="view-today" class="view">
             <div class="workout-meta">
-                <div class="workout-title">Rutina de Torso</div>
+                <div class="workout-title" id="current-workout-title">Rutina del Día</div>
                 <div class="workout-date" id="current-workout-date"></div>
+            </div>
+
+            <div class="card compact-card workout-control-card">
+                <div class="control-row">
+                    <div>
+                        <div class="control-label">Día de entrenamiento</div>
+                        <div class="control-value" id="workout-day-subtitle">Selecciona el foco de hoy</div>
+                    </div>
+                    <select id="workout-day-select" class="chart-select" onchange="changeWorkoutDay(this.value)">
+                        <!-- Rellenado dinámicamente -->
+                    </select>
+                </div>
+                <div class="mesocycle-strip" id="today-mesocycle-strip">
+                    <!-- Rellenado dinámicamente -->
+                </div>
             </div>
 
             <!-- Listado dinámico de ejercicios del entrenamiento activo -->
@@ -59,7 +278,7 @@
             </button>
         </section>
 
-        <!-- VISTA 2: DASHBOARD DE PROGRESIONES -->
+        <!-- VISTA 3: DASHBOARD DE PROGRESIONES -->
         <section id="view-progress" class="view">
             <!-- Barra de Progreso Semanal de Series Efectivas -->
             <div class="card">
@@ -68,39 +287,10 @@
                     Volumen Semanal Efectivo
                 </h3>
                 <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
-                    Series completadas al 100% de la carga programada (lunes a domingo). Series incompletas o de menor carga penalizan proporcionalmente en la barra de volumen.
+                    Series efectivas de lunes a domingo. Si una serie queda por debajo del objetivo, la app la pondera parcialmente para que el progreso dependa del volumen real, no de días fijos.
                 </p>
-                <div class="weekly-volume-container">
-                    <div class="volume-bar-wrapper">
-                        <div class="volume-header">
-                            <span class="volume-name">Pecho (Empujes)</span>
-                            <span class="volume-score" id="volume-score-pecho">0.0 / 10 series</span>
-                        </div>
-                        <div class="volume-bar-bg">
-                            <div class="volume-bar-fill" id="volume-bar-pecho"></div>
-                        </div>
-                        <div class="volume-footer">
-                            <span>Mín: 8 series</span>
-                            <span id="volume-remaining-pecho">Restan 10 series</span>
-                            <span>Óptimo: 10 series</span>
-                        </div>
-                    </div>
-
-                    <div class="volume-bar-wrapper">
-                        <div class="volume-header">
-                            <span class="volume-name">Espalda (Tirones)</span>
-                            <span class="volume-score" id="volume-score-espalda">0.0 / 12 series</span>
-                        </div>
-                        <div class="volume-bar-bg">
-                            <div class="volume-bar-fill" id="volume-bar-espalda"></div>
-                        </div>
-                        <div class="volume-footer">
-                            <span>Mín: 10 series</span>
-                            <span id="volume-remaining-espalda">Restan 12 series</span>
-                            <span>Óptimo: 12 series</span>
-                        </div>
-                    </div>
-                </div>
+                <div class="weekly-plan-summary" id="weekly-plan-summary"></div>
+                <div class="weekly-volume-container" id="weekly-volume-container"></div>
             </div>
 
             <!-- Previsión de Próxima Sesión y Estrategias por Ejercicio -->
@@ -110,7 +300,7 @@
                     Previsión de Carga (Siguiente Sesión)
                 </h3>
                 <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem;">
-                    Objetivos lógicos calculados por el algoritmo de Doble Progresión para tu próximo entrenamiento de Torso.
+                    Objetivos calculados por doble progresión para el día seleccionado. Al completar todas las series suben reps; al tocar el techo del rango sube la carga y vuelves al mínimo.
                 </p>
                 <div class="forecast-grid" id="forecast-exercises-container">
                     <!-- Rellenado dinámicamente -->
@@ -142,39 +332,68 @@
             </div>
         </section>
 
-        <!-- VISTA 3: DASHBOARD DE ESTRATEGIAS -->
+        <!-- VISTA 4: DASHBOARD DE ESTRATEGIAS -->
         <section id="view-strategies" class="view">
             <div class="card" style="border-left: 4px solid var(--accent-cyan);">
-                <h3 class="strategy-title">Fisiología del Estímulo: Voz y Oídos</h3>
+                <h3 class="strategy-title">Principio del Estímulo</h3>
                 <p class="strategy-text">
-                    La corteza motora envía impulsos eléctricos (<strong>"La Voz"</strong>). Las fibras musculares son los <strong>"Oídos"</strong>. Para activar las fibras de alto umbral (crecimiento muscular real), necesitas la <strong>intencionalidad concéntrica máxima</strong> (desplazar el peso lo más rápido que puedas en la subida). La tensión mecánica efectiva se da cuando la barra se ralentiza de forma involuntaria por la fatiga acumulada en las últimas repeticiones.
+                    El plan prioriza tension mecanica, tecnica estable y cercania al fallo. Las series cuentan cuando se completan dentro del rango con RIR bajo: compuestos normalmente RIR 1-2, aislados y maquinas estables RIR 0-1.
                 </p>
             </div>
 
             <div class="card style-overload" style="border-left: 4px solid var(--accent-violet);">
                 <h3 class="strategy-title">Algoritmo de Sobrecarga Progresiva</h3>
                 <p class="strategy-text">
-                    Tu progresión se rige por un bucle de doble progresión:<br>
-                    1. <strong>Fase de Consolidación</strong>: Trabajas un peso fijo buscando subir repeticiones sesión a sesión hasta alcanzar el límite superior (<strong>$R_{max}$</strong>, ej. 10 reps) en todas las series del ejercicio.<br>
-                    2. <strong>Fase de Sobrecarga</strong>: Al conseguir las reps máximas en todas las series, el peso sube automáticamente (<strong>+2 kg</strong>) en la siguiente sesión y las repeticiones objetivo bajan al mínimo (<strong>$R_{min} = 6$ reps</strong>). Esto permite descansar el SNC mientras los tendones se adaptan al incremento de tensión mecánica.
+                    Cada ejercicio tiene un rango propio. Primero suben las repeticiones con el mismo peso hasta el limite superior. Cuando completas todas las series en ese techo, la carga sube con la microcarga del ejercicio y las reps vuelven al minimo. Si dos exposiciones seguidas no mejoran, la app aplica un reset ligero del -5%.
                 </p>
             </div>
 
             <div class="card style-stagnation" style="border-left: 4px solid var(--accent-amber);">
                 <h3 class="strategy-title">Estrategias contra el Estancamiento</h3>
                 <p class="strategy-text">
-                    <strong>1. Regla de las 2 Sesiones</strong>: Si en 2 entrenamientos consecutivos del mismo ejercicio no progresas en repeticiones ni en peso, la app activará automáticamente un <strong>Reset de Carga del -5%</strong> y volverá a establecer el objetivo al rango $R_{min}$. Esto disipará la fatiga del tendón y te permitirá acumular inercia positiva.<br><br>
-                    <strong>2. Optimización del Descanso</strong>: Asegúrate de descansar 3 minutos enteros (temporizador del widget) en compuestos pesados para restablecer la creatina fosfato (ATP-PC) y disipar la fatiga central del sistema nervioso.
+                    Los mesociclos duran 6 semanas por defecto: base, sobrecarga y descarga final. El temporizador se estandariza en <strong>2 minutos</strong> para toda la rutina; es un compromiso practico para hipertrofia, aunque en compuestos muy pesados puedes esperar unos segundos extra si necesitas mantener rendimiento.
                 </p>
             </div>
         </section>
 
-        <!-- VISTA 4: DIETA Y PASOS -->
+        <!-- VISTA 5: DIETA Y PASOS -->
         <section id="view-diet" class="view">
             <!-- Selector de Tipo de Día -->
             <div class="dieta-selector">
                 <button class="dieta-btn active" id="dieta-tab-entreno" onclick="changeDietTab('entreno')">Día de Entreno</button>
                 <button class="dieta-btn" id="dieta-tab-descanso" onclick="changeDietTab('descanso')">Día de Descanso</button>
+            </div>
+
+            <div class="card">
+                <h3 class="progress-section-title">
+                    <i data-lucide="calendar-range" style="color: var(--accent-violet);"></i>
+                    Planificador de Dieta
+                </h3>
+                <div class="dashboard-form-grid">
+                    <label class="settings-field">
+                        <span>Fecha</span>
+                        <input type="date" id="diet-date-input" onchange="changeDietDate(this.value)">
+                    </label>
+                    <label class="settings-field">
+                        <span>Actividad</span>
+                        <select id="diet-activity-level" onchange="updateDietPlanFromUI(false)">
+                            <!-- Rellenado dinámicamente -->
+                        </select>
+                    </label>
+                    <label class="settings-field">
+                        <span>Pasos previstos</span>
+                        <input type="number" id="diet-planned-steps" step="500" onchange="updateDietPlanFromUI(false)">
+                    </label>
+                    <label class="settings-field">
+                        <span>Cheat meal kcal</span>
+                        <input type="number" id="diet-cheat-calories" step="50" placeholder="0" onchange="updateDietPlanFromUI(false)">
+                    </label>
+                </div>
+                <button class="btn btn-primary" onclick="saveDietPlanFromUI()" style="margin-top: 1rem;">
+                    <i data-lucide="calculator"></i>
+                    Recalcular Dieta
+                </button>
+                <div class="cheat-advice" id="diet-cheat-result" style="margin-top: 1rem;"></div>
             </div>
 
             <!-- Ficha de Macros y Calorías -->
@@ -230,6 +449,67 @@
             <h2 style="font-family: var(--font-heading); font-size: 1.3rem; margin-bottom: 1rem;">Ajustes del Sistema</h2>
             
             <div style="margin-bottom: 2rem;">
+                <h3 style="font-family: var(--font-heading); font-size: 1rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Mesociclo y semana</h3>
+                <div class="settings-grid">
+                    <label class="settings-field">
+                        <span>Inicio</span>
+                        <input type="date" id="settings-meso-start">
+                    </label>
+                    <label class="settings-field">
+                        <span>Semanas</span>
+                        <input type="number" id="settings-meso-length" min="3" max="8">
+                    </label>
+                    <label class="settings-field">
+                        <span>Días/semana</span>
+                        <select id="settings-training-days">
+                            <option value="3">3 días</option>
+                            <option value="4">4 días</option>
+                            <option value="5">5 días</option>
+                        </select>
+                    </label>
+                </div>
+                <button class="btn btn-primary" onclick="saveMesocycleSettingsFromUI()" style="margin-top: 1rem;">
+                    <i data-lucide="calendar-check"></i>
+                    Guardar Mesociclo
+                </button>
+                <button class="btn btn-secondary" onclick="startNewMesocycleFromUI()" style="margin-top: 0.65rem;">
+                    <i data-lucide="refresh-cw"></i>
+                    Empezar Nuevo Mesociclo Hoy
+                </button>
+            </div>
+
+            <hr style="border: none; border-top: 1px solid var(--border-color); margin-bottom: 2rem;">
+
+            <div style="margin-bottom: 2rem;">
+                <h3 style="font-family: var(--font-heading); font-size: 1rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Sincronización Local / Web</h3>
+                <div class="settings-grid">
+                    <label class="settings-field">
+                        <span>API Render</span>
+                        <input type="url" id="settings-sync-endpoint" placeholder="https://tu-app.onrender.com">
+                    </label>
+                    <label class="settings-field">
+                        <span>Clave</span>
+                        <input type="text" id="settings-sync-key" placeholder="mi-progreso">
+                    </label>
+                    <label class="settings-field">
+                        <span>Secreto</span>
+                        <input type="password" id="settings-sync-secret" placeholder="SYNC_SECRET">
+                    </label>
+                </div>
+                <div class="sync-status" id="sync-status-text">Sin sincronizar todavía.</div>
+                <button class="btn btn-primary" onclick="saveSyncSettingsFromUI()" style="margin-top: 1rem;">
+                    <i data-lucide="cloud"></i>
+                    Guardar y Sincronizar
+                </button>
+                <button class="btn btn-secondary" onclick="syncNowFromUI()" style="margin-top: 0.65rem;">
+                    <i data-lucide="refresh-cw"></i>
+                    Sincronizar Ahora
+                </button>
+            </div>
+
+            <hr style="border: none; border-top: 1px solid var(--border-color); margin-bottom: 2rem;">
+
+            <div style="margin-bottom: 2rem;">
                 <h3 style="font-family: var(--font-heading); font-size: 1rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Editar Pesos / Objetivos Actuales</h3>
                 <div id="settings-exercises-list" style="display: flex; flex-direction: column; gap: 0.85rem;">
                     <!-- Rellenado dinámicamente -->
@@ -256,23 +536,23 @@
 
     </main>
 
-    <!-- NAVEGACIÓN INFERIOR (TABS DE 4 PESTAÑAS) -->
+    <!-- NAVEGACIÓN INFERIOR -->
     <nav>
-        <button class="nav-item active" onclick="switchView('today')">
-            <i data-lucide="calendar"></i>
-            Hoy
+        <button class="nav-item active" onclick="switchView('dashboard')">
+            <i data-lucide="layout-dashboard"></i>
+            Dashboard
+        </button>
+        <button class="nav-item" onclick="switchView('today')">
+            <i data-lucide="dumbbell"></i>
+            Entreno
         </button>
         <button class="nav-item" onclick="switchView('progress')">
             <i data-lucide="trending-up"></i>
-            Progresión
-        </button>
-        <button class="nav-item" onclick="switchView('strategies')">
-            <i data-lucide="award"></i>
-            Estrategias
+            Progreso
         </button>
         <button class="nav-item" onclick="switchView('diet')">
             <i data-lucide="apple"></i>
-            Dieta y Pasos
+            Dieta
         </button>
         <button class="nav-item" onclick="switchView('settings')">
             <i data-lucide="settings"></i>
@@ -286,7 +566,7 @@
             <svg class="timer-svg">
                 <circle cx="41" cy="41" r="34" class="timer-circle" id="timer-circle-progress" stroke-dasharray="213.6" stroke-dashoffset="0"></circle>
             </svg>
-            <span class="timer-digits" id="timer-text-display">03:00</span>
+            <span class="timer-digits" id="timer-text-display">02:00</span>
             <span class="timer-label" id="timer-status-label">Descanso</span>
         </div>
     </div>
@@ -334,7 +614,9 @@
 
     <!-- Inicializar iconos Lucide -->
     <script>
-        lucide.createIcons();
+        if (window.lucide && typeof window.lucide.createIcons === "function") {
+            lucide.createIcons();
+        }
     </script>
 </body>
 </html>
