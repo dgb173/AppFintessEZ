@@ -21,6 +21,7 @@ let dashboardNutritionChartInstance = null;
 let dashboardProgressChartInstance = null;
 let selectedDashboardDate = getTodayISO();
 let selectedDietDate = getTodayISO();
+let currentFoodMeal = [];
 
 const SyncClient = (() => {
     const STATE_KEYS = [
@@ -333,6 +334,21 @@ function switchView(viewId) {
 
 function formatInt(value) {
     return Math.round(value || 0).toLocaleString("es-ES");
+}
+
+function formatMacro(value) {
+    const parsed = Number(value || 0);
+    const rounded = parsed >= 10 ? Math.round(parsed) : Math.round(parsed * 10) / 10;
+    return Number.isInteger(rounded) ? rounded.toString() : rounded.toFixed(1).replace(".0", "");
+}
+
+function escapeHtml(value) {
+    return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 function shortWorkoutTitle(title) {
@@ -1325,6 +1341,7 @@ function renderDietView() {
             </div>
         `).join("");
     }
+    renderFoodDatabaseView();
     refreshIcons();
 }
 
@@ -1396,6 +1413,160 @@ function saveSteps() {
     if (selectedDietDate === selectedDashboardDate) renderDashboardView();
     queueCloudSync();
     alert("Pasos registrados.");
+}
+
+function renderFoodDatabaseView() {
+    const container = document.getElementById("food-results-container");
+    if (!container) return;
+
+    const note = document.getElementById("food-source-note");
+    const categorySelect = document.getElementById("food-category-select");
+    const count = document.getElementById("food-db-count");
+
+    if (!window.FoodDB) {
+        container.innerHTML = `<p class="empty-food-state">Base de alimentos no cargada.</p>`;
+        return;
+    }
+
+    if (note) note.innerText = window.FoodDB.sourceNote;
+    if (count) count.innerText = `${window.FoodDB.foods.length} alimentos`;
+    if (categorySelect && categorySelect.dataset.ready !== "true") {
+        categorySelect.innerHTML = window.FoodDB.categories.map(([id, label]) => `
+            <option value="${escapeHtml(id)}">${escapeHtml(label)}</option>
+        `).join("");
+        categorySelect.dataset.ready = "true";
+    }
+
+    renderFoodSearch();
+    renderFoodMealBuilder();
+}
+
+function renderFoodSearch() {
+    const container = document.getElementById("food-results-container");
+    if (!container || !window.FoodDB) return;
+
+    const query = document.getElementById("food-search-input")?.value || "";
+    const category = document.getElementById("food-category-select")?.value || "all";
+    const foods = window.FoodDB.search(query, category);
+
+    if (!foods.length) {
+        container.innerHTML = `<p class="empty-food-state">No hay resultados para esa búsqueda.</p>`;
+        return;
+    }
+
+    container.innerHTML = foods.map(food => `
+        <article class="food-card">
+            <img src="${food.image}" alt="${escapeHtml(food.name)}" class="food-image" loading="lazy">
+            <div class="food-card-body">
+                <div>
+                    <div class="food-name">${escapeHtml(food.name)}</div>
+                    <div class="food-brand">${escapeHtml(food.brand)} · ración ${formatMacro(food.servingG)}g</div>
+                </div>
+                <div class="food-macro-row">
+                    <span>${formatInt(food.kcal)} kcal</span>
+                    <span>P ${formatMacro(food.protein)}g</span>
+                    <span>C ${formatMacro(food.carbs)}g</span>
+                    <span>G ${formatMacro(food.fat)}g</span>
+                </div>
+                <button class="btn btn-secondary food-add-btn" onclick="addFoodToMeal('${food.id}')">
+                    <i data-lucide="plus"></i>
+                    Añadir
+                </button>
+            </div>
+        </article>
+    `).join("");
+    refreshIcons();
+}
+
+function addFoodToMeal(foodId) {
+    if (!window.FoodDB) return;
+    const food = window.FoodDB.foods.find(item => item.id === foodId);
+    if (!food) return;
+    currentFoodMeal.push({ foodId, grams: food.servingG || 100 });
+    renderFoodMealBuilder();
+}
+
+function updateFoodMealGrams(index, value) {
+    if (!currentFoodMeal[index]) return;
+    currentFoodMeal[index].grams = Math.max(0, parseFloat(value) || 0);
+    renderFoodMealBuilder();
+}
+
+function removeFoodMealItem(index) {
+    currentFoodMeal.splice(index, 1);
+    renderFoodMealBuilder();
+}
+
+function clearFoodMealBuilder() {
+    currentFoodMeal = [];
+    renderFoodMealBuilder();
+}
+
+function renderFoodMealBuilder() {
+    const builder = document.getElementById("food-meal-builder");
+    if (!builder || !window.FoodDB) return;
+
+    currentFoodMeal = currentFoodMeal.filter(item => window.FoodDB.foods.some(food => food.id === item.foodId));
+    if (!currentFoodMeal.length) {
+        builder.innerHTML = `<p class="empty-food-state">Añade alimentos para construir una comida.</p>`;
+    } else {
+        builder.innerHTML = currentFoodMeal.map((item, index) => {
+            const food = window.FoodDB.foods.find(f => f.id === item.foodId);
+            const scaled = window.FoodDB.scale(food, item.grams);
+            return `
+                <div class="food-meal-row">
+                    <img src="${food.image}" alt="${escapeHtml(food.name)}" class="food-meal-thumb" loading="lazy">
+                    <div class="food-meal-main">
+                        <strong>${escapeHtml(food.name)}</strong>
+                        <span>${formatInt(scaled.kcal)} kcal · P ${formatMacro(scaled.protein)}g · C ${formatMacro(scaled.carbs)}g · G ${formatMacro(scaled.fat)}g</span>
+                    </div>
+                    <label class="grams-input">
+                        <span>g</span>
+                        <input type="number" value="${formatMacro(item.grams)}" min="0" step="5" onchange="updateFoodMealGrams(${index}, this.value)">
+                    </label>
+                    <button class="icon-btn" onclick="removeFoodMealItem(${index})" title="Quitar alimento">
+                        <i data-lucide="x"></i>
+                    </button>
+                </div>
+            `;
+        }).join("");
+    }
+
+    const totals = window.FoodDB.total(currentFoodMeal);
+    const kcal = document.getElementById("food-meal-kcal");
+    const protein = document.getElementById("food-meal-protein");
+    const carbs = document.getElementById("food-meal-carbs");
+    const fat = document.getElementById("food-meal-fat");
+    if (kcal) kcal.innerText = formatInt(totals.kcal);
+    if (protein) protein.innerText = `${formatMacro(totals.protein)}g`;
+    if (carbs) carbs.innerText = `${formatMacro(totals.carbs)}g`;
+    if (fat) fat.innerText = `${formatMacro(totals.fat)}g`;
+    refreshIcons();
+}
+
+function applyFoodMealToDietLog() {
+    if (!window.FoodDB || !currentFoodMeal.length) {
+        alert("Añade al menos un alimento a la comida.");
+        return;
+    }
+
+    const totals = window.FoodDB.total(currentFoodMeal);
+    const current = Db.getDailyNutrition(selectedDietDate);
+    Db.saveDailyNutrition(selectedDietDate, {
+        calories: current.calories + Math.round(totals.kcal),
+        protein: current.protein + Math.round(totals.protein),
+        carbs: current.carbs + Math.round(totals.carbs),
+        fat: current.fat + Math.round(totals.fat),
+        weightKg: current.weightKg,
+        adherenceNote: current.adherenceNote
+    });
+
+    const message = `${formatInt(totals.kcal)} kcal sumadas a ${selectedDietDate}.`;
+    currentFoodMeal = [];
+    renderDietView();
+    if (selectedDietDate === selectedDashboardDate) renderDashboardView();
+    queueCloudSync();
+    alert(message);
 }
 
 function renderSettingsView() {

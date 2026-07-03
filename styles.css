@@ -66,7 +66,7 @@ header h1 {
     font-family: var(--font-heading);
     font-size: 1.6rem;
     font-weight: 900;
-    letter-spacing: -1px;
+    letter-spacing: 0;
     background: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -1358,6 +1358,257 @@ nav {
     line-height: 1.5;
 }
 
+.food-source-note {
+    color: var(--text-muted);
+    font-size: 0.76rem;
+    font-weight: 600;
+    line-height: 1.45;
+    margin: -0.3rem 0 1rem;
+}
+
+.food-toolbar {
+    align-items: end;
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: minmax(0, 1.5fr) minmax(150px, 0.7fr) auto;
+    margin-bottom: 1rem;
+}
+
+.food-count {
+    align-items: center;
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.18);
+    border-radius: 10px;
+    color: var(--accent-amber);
+    display: flex;
+    font-size: 0.78rem;
+    font-weight: 800;
+    min-height: 43px;
+    padding: 0.7rem 0.8rem;
+    white-space: nowrap;
+}
+
+.food-results-grid {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-height: 520px;
+    overflow-y: auto;
+    padding-right: 0.25rem;
+}
+
+.food-card {
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    display: grid;
+    grid-template-columns: 92px minmax(0, 1fr);
+    min-height: 132px;
+    overflow: hidden;
+}
+
+.food-image {
+    aspect-ratio: 1 / 1.44;
+    height: 100%;
+    object-fit: cover;
+    width: 92px;
+}
+
+.food-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    justify-content: space-between;
+    min-width: 0;
+    padding: 0.7rem;
+}
+
+.food-name {
+    color: var(--text-primary);
+    font-family: var(--font-heading);
+    font-size: 0.86rem;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.food-brand {
+    color: var(--text-muted);
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-top: 0.18rem;
+}
+
+.food-macro-row {
+    display: grid;
+    gap: 0.25rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.food-macro-row span {
+    background: rgba(6, 182, 212, 0.06);
+    border: 1px solid rgba(6, 182, 212, 0.1);
+    border-radius: 7px;
+    color: var(--text-secondary);
+    font-size: 0.67rem;
+    font-weight: 800;
+    padding: 0.28rem 0.35rem;
+}
+
+.food-add-btn {
+    min-height: 34px;
+    padding: 0.45rem 0.55rem;
+}
+
+.food-builder {
+    background: rgba(3, 7, 18, 0.38);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-top: 1.1rem;
+    padding: 1rem;
+}
+
+.food-builder-header {
+    align-items: center;
+    display: flex;
+    gap: 0.75rem;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+}
+
+.food-builder-header strong {
+    color: var(--text-primary);
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+}
+
+.food-meal-builder {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.food-meal-row {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    display: grid;
+    gap: 0.65rem;
+    grid-template-columns: 48px minmax(0, 1fr) 78px 36px;
+    min-height: 66px;
+    padding: 0.55rem;
+}
+
+.food-meal-thumb {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    object-fit: cover;
+    width: 48px;
+}
+
+.food-meal-main {
+    min-width: 0;
+}
+
+.food-meal-main strong {
+    color: var(--text-primary);
+    display: block;
+    font-size: 0.78rem;
+    line-height: 1.2;
+}
+
+.food-meal-main span {
+    color: var(--text-muted);
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-top: 0.18rem;
+}
+
+.grams-input {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.grams-input span {
+    color: var(--text-muted);
+    font-size: 0.62rem;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.grams-input input {
+    background: rgba(3, 7, 18, 0.8);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 0.8rem;
+    font-weight: 800;
+    padding: 0.42rem;
+    width: 100%;
+}
+
+.icon-btn {
+    align-items: center;
+    background: rgba(248, 113, 113, 0.08);
+    border: 1px solid rgba(248, 113, 113, 0.18);
+    border-radius: 8px;
+    color: #f87171;
+    cursor: pointer;
+    display: flex;
+    height: 36px;
+    justify-content: center;
+    width: 36px;
+}
+
+.icon-btn svg {
+    height: 16px;
+    width: 16px;
+}
+
+.meal-total-grid {
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-top: 0.85rem;
+}
+
+.meal-total-grid div {
+    background: rgba(16, 185, 129, 0.06);
+    border: 1px solid rgba(16, 185, 129, 0.13);
+    border-radius: 8px;
+    padding: 0.65rem 0.45rem;
+    text-align: center;
+}
+
+.meal-total-grid span {
+    color: var(--text-muted);
+    display: block;
+    font-size: 0.63rem;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.meal-total-grid strong {
+    color: var(--success);
+    display: block;
+    font-family: var(--font-timer);
+    font-size: 0.9rem;
+    margin-top: 0.15rem;
+}
+
+.empty-food-state {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 0.7rem 0;
+    text-align: center;
+}
+
 /* Steps Tracker Widget */
 .steps-input-group {
     display: flex;
@@ -1598,7 +1849,30 @@ nav {
     .abc-grid,
     .dashboard-form-grid,
     .nutrition-dashboard-grid,
-    .dashboard-chart-grid {
+    .dashboard-chart-grid,
+    .food-toolbar,
+    .food-results-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .food-toolbar {
+        align-items: stretch;
+    }
+
+    .food-count {
+        justify-content: center;
+    }
+
+    .food-builder-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .food-meal-row {
+        grid-template-columns: 42px minmax(0, 1fr) 72px 34px;
+    }
+
+    .meal-total-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
@@ -1645,7 +1919,17 @@ nav {
 
 @media(max-width: 620px) {
     .abc-grid,
-    .dashboard-chart-grid {
+    .dashboard-chart-grid,
+    .food-results-grid,
+    .food-toolbar {
         grid-template-columns: 1fr;
+    }
+
+    .food-card {
+        grid-template-columns: 84px minmax(0, 1fr);
+    }
+
+    .food-image {
+        width: 84px;
     }
 }

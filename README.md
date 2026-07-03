@@ -2,6 +2,17 @@
 
 Dashboard de progresion de gimnasio, mesociclos, dieta autoregulada, cheat meal y sincronizacion local/web.
 
+## Base de alimentos
+
+Incluye `food-database.js` con 153 alimentos por 100 g, imagen generada local para cada alimento y buscador dentro de la vista Dieta.
+
+- Mi dieta: pollo, pavo, soja texturizada, crema de cacahuete, cacahuete desgrasado, crema de arroz, arroz, patata, avena y huevos.
+- Tortitas: Mercadona, Carrefour, Lidl y Caprabo/Eroski.
+- Barritas: Hacendado, Barebells, Grenade, Quest, MyProtein, Prozis, Foodspring, PowerBar, Enervit, Aptonia, Amix, Lidl, Carrefour y Weider.
+- Verduras, carbohidratos, frutas y extras para completar comidas.
+
+Los valores son promedios por 100 g. Los genericos estan basados en referencias tipo USDA/FoodData Central; los productos comerciales son aproximaciones de etiquetas publicas/Open Food Facts cuando hay datos disponibles.
+
 ## Local
 
 ```bash

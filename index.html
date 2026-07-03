@@ -442,6 +442,50 @@
                     <!-- Rellenado dinámicamente -->
                 </div>
             </div>
+
+            <div class="card">
+                <h3 class="progress-section-title">
+                    <i data-lucide="database" style="color: var(--accent-amber);"></i>
+                    Base de Alimentos
+                </h3>
+                <p class="food-source-note" id="food-source-note"></p>
+                <div class="food-toolbar">
+                    <label class="settings-field">
+                        <span>Buscar</span>
+                        <input type="search" id="food-search-input" placeholder="pollo, tortitas, barrita..." oninput="renderFoodSearch()">
+                    </label>
+                    <label class="settings-field">
+                        <span>Categoría</span>
+                        <select id="food-category-select" onchange="renderFoodSearch()"></select>
+                    </label>
+                    <div class="food-count" id="food-db-count">0 alimentos</div>
+                </div>
+                <div class="food-results-grid" id="food-results-container"></div>
+
+                <div class="food-builder">
+                    <div class="food-builder-header">
+                        <div>
+                            <div class="control-label">Comida actual</div>
+                            <strong>Sumador directo a dieta real</strong>
+                        </div>
+                        <button class="btn btn-secondary" onclick="clearFoodMealBuilder()">
+                            <i data-lucide="trash-2"></i>
+                            Vaciar
+                        </button>
+                    </div>
+                    <div id="food-meal-builder" class="food-meal-builder"></div>
+                    <div class="meal-total-grid">
+                        <div><span>Kcal</span><strong id="food-meal-kcal">0</strong></div>
+                        <div><span>Proteína</span><strong id="food-meal-protein">0g</strong></div>
+                        <div><span>Carbs</span><strong id="food-meal-carbs">0g</strong></div>
+                        <div><span>Grasas</span><strong id="food-meal-fat">0g</strong></div>
+                    </div>
+                    <button class="btn btn-primary" onclick="applyFoodMealToDietLog()" style="margin-top: 1rem;">
+                        <i data-lucide="plus-circle"></i>
+                        Sumar a Dieta Real del Día
+                    </button>
+                </div>
+            </div>
         </section>
 
         <!-- VISTA DE AJUSTES -->
@@ -610,6 +654,7 @@
 
     <!-- Cargar base de datos local y lógica principal -->
     <script src="database.js"></script>
+    <script src="food-database.js"></script>
     <script src="app.js"></script>
 
     <!-- Inicializar iconos Lucide -->
