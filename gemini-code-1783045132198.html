@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MesoTracker - Especialización Cían Pro</title>
+    <style>
+        :root {
+            --bg-main: #0b0f19;
+            --bg-card: #151d30;
+            --bg-input: #1f2a45;
+            --accent: #06b6d4;
+            --accent-hover: #0891b2;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            padding: 12px;
+            padding-bottom: 40px;
+        }
+        .app-container {
+            max-width: 540px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 16px;
+            padding: 10px 0;
+        }
+        header h1 {
+            font-size: 1.6rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        header p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+        .config-bar {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+            border: 1px solid #222f4c;
+        }
+        .config-item {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        .config-item span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        select, .week-input-box input {
+            background: var(--bg-input);
+            border: 1px solid #2e3f66;
+            color: var(--text-main);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            width: 100%;
+            outline: none;
+        }
+        select:focus, .week-input-box input:focus {
+            border-color: var(--accent);
+        }
+        .exercise-card {
+            background: var(--bg-card);
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 16px;
+            border: 1px solid #222f4c;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        }
+        .exercise-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .exercise-name {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        .exercise-badge {
+            font-size: 0.75rem;
+            background: rgba(6, 182, 212, 0.15);
+            color: var(--accent);
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-weight: bold;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+        .history-badge {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            background: rgba(0, 0, 0, 0.2);
+            padding: 6px 10px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            border-left: 3px solid #334155;
+        }
+        .set-row {
+            background: rgba(0, 0, 0, 0.15);
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            border: 1px solid #1c273e;
+        }
+        .set-label {
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 6px;
+            display: block;
+        }
+        .input-group-container {
+            display: flex;
+            gap: 12px;
+        }
+        .input-block {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .input-block label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+        .counter-control {
+            display: flex;
+            align-items: center;
+            background: var(--bg-input);
+            border-radius: 6px;
+            border: 1px solid #2e3f66;
+            overflow: hidden;
+        }
+        .counter-btn {
+            background: transparent;
+            border: none;
+            color: var(--accent);
+            font-size: 1.2rem;
+            font-weight: bold;
+            width: 32px;
+            height: 36px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .counter-btn:active {
+            background: rgba(6, 182, 212, 0.1);
+        }
+        .counter-control input {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            text-align: center;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: bold;
+            outline: none;
+            -moz-appearance: textfield;
+        }
+        .counter-control input::-webkit-outer-spin-button,
+        .counter-control input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .btn-action-save {
+            background: var(--accent);
+            color: #000;
+            font-weight: 700;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 8px;
+            font-size: 0.95rem;
+            transition: background 0.15s;
+        }
+        .btn-action-save:hover {
+            background: var(--accent-hover);
+        }
+        .feedback-panel {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            line-height: 1.4;
+            display: none;
+        }
+        .panel-success { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid var(--success); }
+        .panel-warning { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid var(--warning); }
+        .panel-danger { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid var(--danger); }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <header>
+        <h1>MesoTracker Cyan</h1>
+        <p>Especialización Pecho/Espalda • Optimización de Carga</p>
+    </header>
+
+    <div class="config-bar">
+        <div class="config-item">
+            <span>DÍA DE ENTRENAMIENTO</span>
+            <select id="daySelect" onchange="loadRoutine()">
+                <option value="1">DÍA 1: Pecho Focus (+F/G/B/H)</option>
+                <option value="2">DÍA 2: Espalda Focus (+C/T/Ge/Ab)</option>
+                <option value="3">DÍA 3: Pecho Focus (+F/G/B/H)</option>
+                <option value="4">DÍA 4: Espalda Focus (+C/T/Ge/Ab)</option>
+            </select>
+        </div>
+        <div class="config-item" style="max-width: 110px;">
+            <span>SEMANA</span>
+            <div class="counter-control">
+                <button class="counter-btn" onclick="changeWeek(-1)">-</button>
+                <input type="number" id="weekInput" value="1" min="1" max="12" readonly onchange="loadRoutine()">
+                <button class="counter-btn" onclick="changeWeek(1)">+</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="exercisesContainer"></div>
+</div>
+
+<script>
+    const routineData = {
+        1: [
+            { id: "tg_inc_press", name: "Technogym Incline Chest Press", sets: 2, min: 6, max: 10, step: 2.5, defW: 40 },
+            { id: "pure_dip", name: "Pure Strength Seated Dip", sets: 2, min: 6, max: 10, step: 2.5, defW: 50 },
+            { id: "pec_deck", name: "Aperturas en Contractora (Pec Deck)", sets: 1, min: 10, max: 15, step: 2.5, defW: 35 },
+            { id: "lat_raises", name: "Elevaciones Laterales", sets: 2, min: 12, max: 15, step: 1.25, defW: 10 },
+            { id: "bicep_curl", name: "Curl de Bíceps Alterno (Manc.)", sets: 2, min: 10, max: 12, step: 1.25, defW: 14 },
+            { id: "seated_leg_curl", name: "Curl Femoral Sentado", sets: 2, min: 10, max: 12, step: 5, defW: 45 },
+            { id: "hip_thrust", name: "Hip Thrust (Glúteo)", sets: 2, min: 8, max: 12, step: 10, defW: 80 },
+            { id: "cable_crunch", name: "Abdominales en Polea Alta", sets: 3, min: 12, max: 15, step: 5, defW: 30 }
+        ],
+        2: [
+            { id: "pure_pulldown", name: "Technogym Pulldown Pure (Unilat.)", sets: 2, min: 8, max: 12, step: 2.5, defW: 30 },
+            { id: "pure_row", name: "Technogym Row Pure (De Pie)", sets: 2, min: 8, max: 12, step: 2.5, defW: 35 },
+            { id: "tbar_row", name: "Remo en T (T-Bar Row)", sets: 2, min: 6, max: 10, step: 5, defW: 40 },
+            { id: "hack_squat", name: "Sentadilla Hack o Prensa", sets: 2, min: 8, max: 12, step: 10, defW: 60 },
+            { id: "tricep_uni", name: "Extensiones Tríceps Unilaterales", sets: 2, min: 10, max: 12, step: 2.5, defW: 15 },
+            { id: "calf_raise", name: "Elevación Talones de Pie", sets: 2, min: 12, max: 15, step: 5, defW: 50 },
+            { id: "abductor_mach", name: "Máquina de Abductores", sets: 2, min: 12, max: 15, step: 5, defW: 40 }
+        ],
+        3: [
+            { id: "tg_inc_press", name: "Technogym Incline Chest Press", sets: 2, min: 6, max: 10, step: 2.5, defW: 40 },
+            { id: "pure_dip", name: "Pure Strength Seated Dip", sets: 2, min: 6, max: 10, step: 2.5, defW: 50 },
+            { id: "pec_deck", name: "Aperturas en Contractora (Pec Deck)", sets: 1, min: 10, max: 15, step: 2.5, defW: 35 },
+            { id: "mil_press", name: "Press Militar con Mancuerna", sets: 2, min: 8, max: 10, step: 2.5, defW: 16 },
+            { id: "cable_bicep", name: "Curl de Bíceps en Polea Baja", sets: 2, min: 12, max: 15, step: 2.5, defW: 20 },
+            { id: "lying_leg_curl", name: "Curl Femoral Acostado", sets: 2, min: 10, max: 12, step: 5, defW: 35 },
+            { id: "lunges", name: "Zancadas Largas / Prensa", sets: 2, min: 10, max: 12, step: 2.5, defW: 16 },
+            { id: "cable_crunch", name: "Abdominales en Polea Alta", sets: 3, min: 12, max: 15, step: 5, defW: 30 }
+        ],
+        4: [
+            { id: "pure_pulldown", name: "Technogym Pulldown Pure (Unilat.)", sets: 2, min: 8, max: 12, step: 2.5, defW: 30 },
+            { id: "pure_row", name: "Technogym Row Pure (De Pie)", sets: 2, min: 8, max: 12, step: 2.5, defW: 35 },
+            { id: "tbar_row", name: "Remo en T (T-Bar Row)", sets: 2, min: 6, max: 10, step: 5, defW: 40 },
+            { id: "leg_ext", name: "Extensiones Cuádriceps (Leg Ext)", sets: 2, min: 12, max: 15, step: 5, defW: 40 },
+            { id: "tricep_overhead", name: "Extensiones Tríceps Tras Nuca", sets: 2, min: 10, max: 12, step: 2.5, defW: 17.5 },
+            { id: "seated_calf", name: "Elevación Talones Sentado", sets: 2, min: 12, max: 15, step: 5, defW: 30 },
+            { id: "abductor_mach", name: "Máquina de Abductores", sets: 2, min: 12, max: 15, step: 5, defW: 40 },
+            { id: "cable_crunch", name: "Abdominales en Polea Alta", sets: 3, min: 12, max: 15, step: 5, defW: 30 }
+        ]
+    };
+
+    function changeWeek(amount) {
+        const input = document.getElementById("weekInput");
+        let val = parseInt(input.value) + amount;
+        if(val < 1) val = 1;
+        if(val > 12) val = 12;
+        input.value = val;
+        loadRoutine();
+    }
+
+    function changeInputValue(id, amount) {
+        const input = document.getElementById(id);
+        let current = parseFloat(input.value) || 0;
+        let next = current + amount;
+        if(next < 0) next = 0;
+        input.value = Number(next.toFixed(2));
+    }
+
+    function loadRoutine() {
+        const day = document.getElementById("daySelect").value;
+        const week = document.getElementById("weekInput").value;
+        const container = document.getElementById("exercisesContainer");
+        container.innerHTML = "";
+
+        const exercises = routineData[day];
+        const allLogs = JSON.parse(localStorage.getItem("gym_logs_cyan")) || {};
+
+        exercises.forEach(ex => {
+            let lastMarkText = "Sin registros previos.";
+            let foundLast = false;
+            let lastWeight = ex.defW;
+            let lastReps = ex.min;
+            
+            for (let w = week - 1; w >= 1; w--) {
+                const key = `d${day}_ex${ex.id}_w${w}`;
+                if (allLogs[key] && allLogs[key].length > 0) {
+                    const data = allLogs[key];
+                    lastMarkText = data.map((s, i) => `S${i+1}: ${s.weight}kg x ${s.reps}`).join(" | ");
+                    lastWeight = data[0].weight;
+                    lastReps = data[0].reps;
+                    foundLast = true;
+                    break;
+                }
+            }
+            if (!foundLast) {
+                let keys = Object.keys(allLogs).filter(k => k.includes(`_ex${ex.id}`));
+                if (keys.length > 0) {
+                    const latestKey = keys.sort().pop();
+                    const data = allLogs[latestKey];
+                    lastMarkText = "Histórico: " + data.map((s, i) => `S${i+1}: ${s.weight}kg x ${s.reps}`).join(" | ");
+                    lastWeight = data[0].weight;
+                    lastReps = data[0].reps;
+                }
+            }
+
+            const currentKey = `d${day}_ex${ex.id}_w${week}`;
+            const currentData = allLogs[currentKey] || [];
+
+            let card = document.createElement("div");
+            card.className = "exercise-card";
+            
+            let html = `
+                <div class="exercise-title-row">
+                    <span class="exercise-name">${ex.name}</span>
+                    <span class="exercise-badge">${ex.min}-${ex.max} REPS</span>
+                </div>
+                <div class="history-badge">🔙 ${lastMarkText}</div>
+            `;
+
+            for (let i = 0; i < ex.sets; i++) {
+                const activeWeight = currentData[i] ? currentData[i].weight : lastWeight;
+                const activeReps = currentData[i] ? currentData[i].reps : lastReps;
+                
+                html += `
+                    <div class="set-row">
+                        <span class="set-label">SERIE ${i + 1}</span>
+                        <div class="input-group-container">
+                            <div class="input-block">
+                                <label>PESO (KG)</label>
+                                <div class="counter-control">
+                                    <button class="counter-btn" onclick="changeInputValue('w_${ex.id}_${i}', -${ex.step})">-</button>
+                                    <input type="number" step="0.01" id="w_${ex.id}_${i}" value="${activeWeight}">
+                                    <button class="counter-btn" onclick="changeInputValue('w_${ex.id}_${i}', ${ex.step})">+</button>
+                                </div>
+                            </div>
+                            <div class="input-block">
+                                <label>REPETICIONES</label>
+                                <div class="counter-control">
+                                    <button class="counter-btn" onclick="changeInputValue('r_${ex.id}_${i}', -1)">-</button>
+                                    <input type="number" id="r_${ex.id}_${i}" value="${activeReps}">
+                                    <button class="counter-btn" onclick="changeInputValue('r_${ex.id}_${i}', 1)">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            html += `
+                <button class="btn-action-save" onclick="saveExercise('${day}', '${ex.id}', ${ex.sets}, ${ex.min}, ${ex.max}, ${ex.step})">Guardar y Evaluar Progreso</button>
+                <div class="feedback-panel" id="fb_${ex.id}"></div>
+            `;
+
+            card.innerHTML = html;
+            container.appendChild(card);
+            
+            if (currentData.length > 0) {
+                evaluateProgress(ex.id, currentData, ex.min, ex.max, ex.step);
+            }
+        });
+    }
+
+    function saveExercise(day, exId, totalSets, minReps, maxReps, step) {
+        const week = document.getElementById("weekInput").value;
+        const allLogs = JSON.parse(localStorage.getItem("gym_logs_cyan")) || {};
+        const currentKey = `d${day}_ex${exId}_w${week}`;
+        
+        let setData = [];
+        for (let i = 0; i < totalSets; i++) {
+            const weight = parseFloat(document.getElementById(`w_${exId}_${i}`).value);
+            const reps = parseInt(document.getElementById(`r_${exId}_${i}`).value);
+            
+            if (!isNaN(weight) && !isNaN(reps)) {
+                setData.push({ weight, reps });
+            }
+        }
+
+        allLogs[currentKey] = setData;
+        localStorage.setItem("gym_logs_cyan", JSON.stringify(allLogs));
+        evaluateProgress(exId, setData, minReps, maxReps, step);
+    }
+
+    function evaluateProgress(exId, setData, minReps, maxReps, step) {
+        const fbBox = document.getElementById(`fb_${exId}`);
+        fbBox.style.display = "block";
+        fbBox.className = "feedback-panel";
+
+        const bestSet = setData[0]; 
+        const weight = bestSet.weight;
+        const reps = bestSet.reps;
+
+        const estimated1RM = (weight * (1 + (reps / 30))).toFixed(1);
+
+        let advice = "";
+        if (reps >= maxReps) {
+            fbBox.classList.add("panel-success");
+            advice = `🔥 <b>¡Progreso Óptimo!</b> Has alcanzado el límite superior (${reps}/${maxReps} reps). Próxima semana aumenta obligatoriamente <b>+${step}kg</b> de carga.`;
+        } else if (reps < minReps) {
+            fbBox.classList.add("panel-danger");
+            advice = `⚠️ <b>Carga Excesiva o Fatiga.</b> Te has quedado en ${reps} reps (mínimo: ${minReps}). Mantén el peso puliendo la técnica o reduce ligeramente si el RIR es 0.`;
+        } else {
+            fbBox.classList.add("panel-warning");
+            advice = `💪 <b>Zona de Hipertrofia.</b> Hiciste ${reps} reps. Mantén los <b>${weight}kg</b> la próxima semana e intenta arrancar una repetición extra.`;
+        }
+
+        fbBox.innerHTML = `
+            <div><b>1RM Teórico Estimado:</b> ${estimated1RM} kg</div>
+            <div style="margin-top: 4px;">${advice}</div>
+        `;
+    }
+
+    window.onload = loadRoutine;
+</script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Torso Progresión Inteligente</title>
+    <title>Voz & Oídos - Sistema de Progresión Inteligente</title>
     <!-- CSS Estilos -->
     <link rel="stylesheet" href="styles.css">
     <!-- Lucide Icons para interfaz limpia -->
@@ -42,7 +42,7 @@
             </form>
         </section>
 
-        <!-- VISTA ENTRENAMIENTO DE HOY -->
+        <!-- VISTA 1: ENTRENAMIENTO DE HOY -->
         <section id="view-today" class="view">
             <div class="workout-meta">
                 <div class="workout-title">Rutina de Torso</div>
@@ -53,14 +53,71 @@
             <div id="active-exercises-container"></div>
 
             <!-- Botón de guardar entrenamiento -->
-            <button class="btn btn-primary" onclick="finishWorkout()" style="margin-top: 1.5rem;">
+            <button class="btn btn-primary" onclick="finishWorkout()" style="margin-top: 1.5rem; margin-bottom: 2rem;">
                 <i data-lucide="check-check"></i>
                 Terminar y Guardar Entrenamiento
             </button>
         </section>
 
-        <!-- VISTA DE PROGRESO / GRÁFICAS -->
+        <!-- VISTA 2: DASHBOARD DE PROGRESIONES -->
         <section id="view-progress" class="view">
+            <!-- Barra de Progreso Semanal de Series Efectivas -->
+            <div class="card">
+                <h3 class="progress-section-title">
+                    <i data-lucide="target" style="color: var(--accent-cyan);"></i>
+                    Volumen Semanal Efectivo
+                </h3>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+                    Series completadas al 100% de la carga programada (lunes a domingo). Series incompletas o de menor carga penalizan proporcionalmente en la barra de volumen.
+                </p>
+                <div class="weekly-volume-container">
+                    <div class="volume-bar-wrapper">
+                        <div class="volume-header">
+                            <span class="volume-name">Pecho (Empujes)</span>
+                            <span class="volume-score" id="volume-score-pecho">0.0 / 10 series</span>
+                        </div>
+                        <div class="volume-bar-bg">
+                            <div class="volume-bar-fill" id="volume-bar-pecho"></div>
+                        </div>
+                        <div class="volume-footer">
+                            <span>Mín: 8 series</span>
+                            <span id="volume-remaining-pecho">Restan 10 series</span>
+                            <span>Óptimo: 10 series</span>
+                        </div>
+                    </div>
+
+                    <div class="volume-bar-wrapper">
+                        <div class="volume-header">
+                            <span class="volume-name">Espalda (Tirones)</span>
+                            <span class="volume-score" id="volume-score-espalda">0.0 / 12 series</span>
+                        </div>
+                        <div class="volume-bar-bg">
+                            <div class="volume-bar-fill" id="volume-bar-espalda"></div>
+                        </div>
+                        <div class="volume-footer">
+                            <span>Mín: 10 series</span>
+                            <span id="volume-remaining-espalda">Restan 12 series</span>
+                            <span>Óptimo: 12 series</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Previsión de Próxima Sesión y Estrategias por Ejercicio -->
+            <div class="card">
+                <h3 class="progress-section-title">
+                    <i data-lucide="eye" style="color: var(--accent-violet);"></i>
+                    Previsión de Carga (Siguiente Sesión)
+                </h3>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                    Objetivos lógicos calculados por el algoritmo de Doble Progresión para tu próximo entrenamiento de Torso.
+                </p>
+                <div class="forecast-grid" id="forecast-exercises-container">
+                    <!-- Rellenado dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Gráfico de Progreso 1RM -->
             <div class="card">
                 <div class="chart-header">
                     <div class="chart-title">Evolución de Marcas (1RM)</div>
@@ -73,10 +130,97 @@
                 </div>
             </div>
 
+            <!-- Historial Simple -->
             <div class="card">
-                <h3 style="font-family: var(--font-heading); font-size: 1.1rem; margin-bottom: 1rem;">Historial de Entrenamientos</h3>
+                <h3 class="progress-section-title">
+                    <i data-lucide="history" style="color: var(--text-muted);"></i>
+                    Historial de Entrenamientos
+                </h3>
                 <div id="history-list-container" class="history-exercises-list">
                     <p style="color: var(--text-muted); font-size: 0.9rem; text-align: center;">No hay entrenamientos guardados todavía.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- VISTA 3: DASHBOARD DE ESTRATEGIAS -->
+        <section id="view-strategies" class="view">
+            <div class="card" style="border-left: 4px solid var(--accent-cyan);">
+                <h3 class="strategy-title">Fisiología del Estímulo: Voz y Oídos</h3>
+                <p class="strategy-text">
+                    La corteza motora envía impulsos eléctricos (<strong>"La Voz"</strong>). Las fibras musculares son los <strong>"Oídos"</strong>. Para activar las fibras de alto umbral (crecimiento muscular real), necesitas la <strong>intencionalidad concéntrica máxima</strong> (desplazar el peso lo más rápido que puedas en la subida). La tensión mecánica efectiva se da cuando la barra se ralentiza de forma involuntaria por la fatiga acumulada en las últimas repeticiones.
+                </p>
+            </div>
+
+            <div class="card style-overload" style="border-left: 4px solid var(--accent-violet);">
+                <h3 class="strategy-title">Algoritmo de Sobrecarga Progresiva</h3>
+                <p class="strategy-text">
+                    Tu progresión se rige por un bucle de doble progresión:<br>
+                    1. <strong>Fase de Consolidación</strong>: Trabajas un peso fijo buscando subir repeticiones sesión a sesión hasta alcanzar el límite superior (<strong>$R_{max}$</strong>, ej. 10 reps) en todas las series del ejercicio.<br>
+                    2. <strong>Fase de Sobrecarga</strong>: Al conseguir las reps máximas en todas las series, el peso sube automáticamente (<strong>+2 kg</strong>) en la siguiente sesión y las repeticiones objetivo bajan al mínimo (<strong>$R_{min} = 6$ reps</strong>). Esto permite descansar el SNC mientras los tendones se adaptan al incremento de tensión mecánica.
+                </p>
+            </div>
+
+            <div class="card style-stagnation" style="border-left: 4px solid var(--accent-amber);">
+                <h3 class="strategy-title">Estrategias contra el Estancamiento</h3>
+                <p class="strategy-text">
+                    <strong>1. Regla de las 2 Sesiones</strong>: Si en 2 entrenamientos consecutivos del mismo ejercicio no progresas en repeticiones ni en peso, la app activará automáticamente un <strong>Reset de Carga del -5%</strong> y volverá a establecer el objetivo al rango $R_{min}$. Esto disipará la fatiga del tendón y te permitirá acumular inercia positiva.<br><br>
+                    <strong>2. Optimización del Descanso</strong>: Asegúrate de descansar 3 minutos enteros (temporizador del widget) en compuestos pesados para restablecer la creatina fosfato (ATP-PC) y disipar la fatiga central del sistema nervioso.
+                </p>
+            </div>
+        </section>
+
+        <!-- VISTA 4: DIETA Y PASOS -->
+        <section id="view-diet" class="view">
+            <!-- Selector de Tipo de Día -->
+            <div class="dieta-selector">
+                <button class="dieta-btn active" id="dieta-tab-entreno" onclick="changeDietTab('entreno')">Día de Entreno</button>
+                <button class="dieta-btn" id="dieta-tab-descanso" onclick="changeDietTab('descanso')">Día de Descanso</button>
+            </div>
+
+            <!-- Ficha de Macros y Calorías -->
+            <div class="macros-grid">
+                <div class="macro-box kcal">
+                    <div class="macro-val" id="macro-kcal">2750</div>
+                    <div class="macro-label">Calorías</div>
+                </div>
+                <div class="macro-box protein">
+                    <div class="macro-val" id="macro-protein">160g</div>
+                    <div class="macro-label">Proteína</div>
+                </div>
+                <div class="macro-box carbs">
+                    <div class="macro-val" id="macro-carbs">360g</div>
+                    <div class="macro-label">Carbohidratos</div>
+                </div>
+                <div class="macro-box fat">
+                    <div class="macro-val" id="macro-fat">70g</div>
+                    <div class="macro-label">Grasas</div>
+                </div>
+            </div>
+
+            <!-- Tracker de Pasos Diarios -->
+            <div class="card">
+                <h3 class="progress-section-title">
+                    <i data-lucide="footprints" style="color: var(--accent-cyan);"></i>
+                    Control de Actividad Diaria
+                </h3>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.5rem;" id="diet-steps-desc">
+                    Objetivo del día: 10,000 pasos. Mantener la actividad ayuda a bombear metabolitos y disipar fatiga muscular.
+                </p>
+                <div class="steps-input-group">
+                    <input type="number" id="steps-input-value" placeholder="Introduce tus pasos">
+                    <button class="btn btn-primary" onclick="saveSteps()" style="width: auto;">Guardar</button>
+                </div>
+                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.75rem; display: flex; justify-content: space-between;">
+                    <span>Hoy has registrado:</span>
+                    <span id="today-logged-steps-status" style="font-family: var(--font-timer); color: var(--accent-cyan); font-weight: 700;">0 pasos</span>
+                </div>
+            </div>
+
+            <!-- Ficha de comidas -->
+            <div class="card">
+                <h3 class="progress-section-title" id="diet-meals-title">Distribución de Comidas</h3>
+                <div id="meals-list-container">
+                    <!-- Rellenado dinámicamente -->
                 </div>
             </div>
         </section>
@@ -112,7 +256,7 @@
 
     </main>
 
-    <!-- NAVEGACIÓN INFERIOR (TABS) -->
+    <!-- NAVEGACIÓN INFERIOR (TABS DE 4 PESTAÑAS) -->
     <nav>
         <button class="nav-item active" onclick="switchView('today')">
             <i data-lucide="calendar"></i>
@@ -120,7 +264,15 @@
         </button>
         <button class="nav-item" onclick="switchView('progress')">
             <i data-lucide="trending-up"></i>
-            Progreso
+            Progresión
+        </button>
+        <button class="nav-item" onclick="switchView('strategies')">
+            <i data-lucide="award"></i>
+            Estrategias
+        </button>
+        <button class="nav-item" onclick="switchView('diet')">
+            <i data-lucide="apple"></i>
+            Dieta y Pasos
         </button>
         <button class="nav-item" onclick="switchView('settings')">
             <i data-lucide="settings"></i>
@@ -132,14 +284,14 @@
     <div class="timer-container" id="global-timer-widget" onclick="toggleTimerState()">
         <div class="timer-circle-bg">
             <svg class="timer-svg">
-                <circle cx="40" cy="40" r="34" class="timer-circle" id="timer-circle-progress" stroke-dasharray="213.6" stroke-dashoffset="0"></circle>
+                <circle cx="41" cy="41" r="34" class="timer-circle" id="timer-circle-progress" stroke-dasharray="213.6" stroke-dashoffset="0"></circle>
             </svg>
             <span class="timer-digits" id="timer-text-display">03:00</span>
             <span class="timer-label" id="timer-status-label">Descanso</span>
         </div>
     </div>
 
-    <!-- MODAL PARA EDITAR REPETICIONES (Si falla o hace más) -->
+    <!-- MODAL PARA EDITAR REPETICIONES -->
     <div class="modal-overlay" id="edit-reps-modal">
         <div class="modal-content">
             <h3 class="modal-title">Ajustar Repeticiones</h3>
@@ -158,7 +310,7 @@
         </div>
     </div>
 
-    <!-- OVERLAY DE RESUMEN DE PROGRESIÓN (Se muestra al guardar entrenamiento) -->
+    <!-- OVERLAY DE RESUMEN DE PROGRESIÓN -->
     <div class="summary-overlay" id="progression-summary-overlay">
         <div class="summary-card">
             <i data-lucide="sparkles" style="width: 48px; height: 48px; color: var(--accent-cyan); margin-bottom: 1rem; display: inline-block;"></i>
@@ -175,8 +327,6 @@
             </button>
         </div>
     </div>
-
-    <!-- AUDIO DE ALERTA DE FIN DE TEMPORIZADOR (Generado de forma sintetizada por Web Audio API en JS) -->
 
     <!-- Cargar base de datos local y lógica principal -->
     <script src="database.js"></script>
