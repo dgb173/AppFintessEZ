@@ -509,7 +509,7 @@ function renderDashboardCharts() {
                     {
                         label: "Kcal objetivo",
                         data: data.caloriesTarget,
-                        borderColor: "#06b6d4",
+                        borderColor: "#0ea5e9",
                         backgroundColor: "rgba(6, 182, 212, 0.06)",
                         borderWidth: 2,
                         pointRadius: 0,
@@ -518,7 +518,7 @@ function renderDashboardCharts() {
                     {
                         label: "Kcal reales",
                         data: data.caloriesActual,
-                        borderColor: "#10b981",
+                        borderColor: "#059669",
                         borderWidth: 2,
                         pointRadius: 3,
                         tension: 0.3
@@ -526,7 +526,7 @@ function renderDashboardCharts() {
                     {
                         label: "Carbs objetivo",
                         data: data.carbsTarget,
-                        borderColor: "#a855f7",
+                        borderColor: "#7c3aed",
                         borderDash: [4, 4],
                         borderWidth: 1.5,
                         pointRadius: 0,
@@ -558,7 +558,7 @@ function renderDashboardCharts() {
                     {
                         label: "Peso corporal",
                         data: data.bodyWeight,
-                        borderColor: "#06b6d4",
+                        borderColor: "#0ea5e9",
                         backgroundColor: "rgba(6, 182, 212, 0.06)",
                         borderWidth: 2,
                         pointRadius: 3,
@@ -567,7 +567,7 @@ function renderDashboardCharts() {
                     {
                         label: "Mejor 1RM",
                         data: data.bestOneRm,
-                        borderColor: "#a855f7",
+                        borderColor: "#7c3aed",
                         borderWidth: 2,
                         pointRadius: 3,
                         yAxisID: "y1",
@@ -588,19 +588,19 @@ function getDashboardChartOptions(leftLabel, rightLabel) {
         plugins: {
             legend: {
                 labels: {
-                    color: "#cbd5e1",
+                    color: "#334155",
                     font: { family: "Plus Jakarta Sans", size: 10, weight: 700 }
                 }
             }
         },
         scales: {
             x: {
-                grid: { color: "rgba(255, 255, 255, 0.03)" },
+                grid: { color: "rgba(15, 23, 42, 0.08)" },
                 ticks: { color: "#64748b", maxRotation: 0 }
             },
             y: {
                 title: { display: true, text: leftLabel, color: "#64748b" },
-                grid: { color: "rgba(255, 255, 255, 0.04)" },
+                grid: { color: "rgba(15, 23, 42, 0.08)" },
                 ticks: { color: "#64748b" }
             },
             y1: {
@@ -1213,23 +1213,23 @@ function renderProgressChart() {
                 {
                     label: "1RM proyectado (kg)",
                     data: historyData.map(d => d.oneRM),
-                    borderColor: "#06b6d4",
+                    borderColor: "#0ea5e9",
                     backgroundColor: "rgba(6, 182, 212, 0.08)",
                     borderWidth: 2,
                     fill: true,
                     tension: 0.3,
-                    pointBackgroundColor: "#06b6d4",
+                    pointBackgroundColor: "#0ea5e9",
                     pointRadius: 4
                 },
                 {
                     label: "Peso usado (kg)",
                     data: historyData.map(d => d.weight),
-                    borderColor: "#a855f7",
+                    borderColor: "#7c3aed",
                     borderWidth: 1.5,
                     borderDash: [5, 5],
                     fill: false,
                     tension: 0.1,
-                    pointBackgroundColor: "#a855f7",
+                    pointBackgroundColor: "#7c3aed",
                     pointRadius: 3
                 }
             ]
@@ -1241,18 +1241,18 @@ function renderProgressChart() {
                 legend: {
                     display: true,
                     labels: {
-                        color: "#cbd5e1",
+                        color: "#334155",
                         font: { family: "Plus Jakarta Sans", size: 10, weight: 600 }
                     }
                 }
             },
             scales: {
                 x: {
-                    grid: { color: "rgba(255, 255, 255, 0.03)" },
+                    grid: { color: "rgba(15, 23, 42, 0.08)" },
                     ticks: { color: "#64748b" }
                 },
                 y: {
-                    grid: { color: "rgba(255, 255, 255, 0.03)" },
+                    grid: { color: "rgba(15, 23, 42, 0.08)" },
                     ticks: { color: "#64748b" }
                 }
             }

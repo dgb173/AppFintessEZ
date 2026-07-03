@@ -183,7 +183,7 @@
     function img(label, category) {
         const bg = palette[category] || "#06b6d4";
         const safe = String(label).replace(/[<&>]/g, "");
-        const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="360" height="240" viewBox="0 0 360 240"><rect width="360" height="240" rx="28" fill="#07111f"/><circle cx="292" cy="42" r="66" fill="${bg}" opacity=".22"/><circle cx="62" cy="192" r="76" fill="${bg}" opacity=".16"/><rect x="28" y="34" width="304" height="172" rx="22" fill="${bg}" opacity=".16" stroke="${bg}" stroke-opacity=".42"/><text x="44" y="100" fill="#f8fafc" font-family="Arial, sans-serif" font-size="25" font-weight="800">${safe.slice(0, 22)}</text><text x="44" y="134" fill="#cbd5e1" font-family="Arial, sans-serif" font-size="16" font-weight="700">por 100 g</text><text x="44" y="168" fill="${bg}" font-family="Arial, sans-serif" font-size="15" font-weight="800">App Fitness EZ</text></svg>`;
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="360" height="240" viewBox="0 0 360 240"><rect width="360" height="240" rx="28" fill="#ffffff"/><circle cx="292" cy="42" r="66" fill="${bg}" opacity=".14"/><circle cx="62" cy="192" r="76" fill="${bg}" opacity=".1"/><rect x="28" y="34" width="304" height="172" rx="22" fill="#f8fafc" stroke="${bg}" stroke-opacity=".34"/><text x="44" y="100" fill="#0f172a" font-family="Arial, sans-serif" font-size="25" font-weight="800">${safe.slice(0, 22)}</text><text x="44" y="134" fill="#64748b" font-family="Arial, sans-serif" font-size="16" font-weight="700">por 100 g</text><text x="44" y="168" fill="${bg}" font-family="Arial, sans-serif" font-size="15" font-weight="800">App Fitness EZ</text></svg>`;
         return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
     }
 

@@ -1,24 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Orbitron:wght@400;600;700;900&display=swap');
 
 :root {
-    --bg-dark: #030712;
-    --bg-card: rgba(11, 15, 25, 0.7);
-    --border-color: rgba(255, 255, 255, 0.06);
+    --bg-dark: #f8fafc;
+    --bg-card: rgba(255, 255, 255, 0.96);
+    --border-color: rgba(15, 23, 42, 0.1);
     
-    /* Neon gradients & glows */
-    --accent-cyan: #06b6d4;
-    --accent-cyan-glow: rgba(6, 182, 212, 0.25);
-    --accent-violet: #a855f7;
-    --accent-violet-glow: rgba(168, 85, 247, 0.25);
-    --accent-amber: #f59e0b;
-    --accent-amber-glow: rgba(245, 158, 11, 0.25);
+    /* Clear professional accents */
+    --accent-cyan: #0ea5e9;
+    --accent-cyan-glow: rgba(14, 165, 233, 0.2);
+    --accent-violet: #7c3aed;
+    --accent-violet-glow: rgba(124, 58, 237, 0.18);
+    --accent-amber: #d97706;
+    --accent-amber-glow: rgba(217, 119, 6, 0.18);
     
-    --text-primary: #f8fafc;
-    --text-secondary: #cbd5e1;
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
     --text-muted: #64748b;
     
-    --success: #10b981;
-    --success-glow: rgba(16, 185, 129, 0.25);
+    --success: #059669;
+    --success-glow: rgba(5, 150, 105, 0.2);
     
     --font-heading: 'Outfit', sans-serif;
     --font-body: 'Plus Jakarta Sans', sans-serif;
@@ -41,18 +41,19 @@ body {
     flex-direction: column;
     overflow-x: hidden;
     background-image: 
-        radial-gradient(circle at 5% 10%, rgba(168, 85, 247, 0.1) 0%, transparent 40%),
-        radial-gradient(circle at 95% 90%, rgba(6, 182, 212, 0.1) 0%, transparent 40%),
-        radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.5) 0%, #030712 100%);
+        radial-gradient(circle at 5% 10%, rgba(14, 165, 233, 0.08) 0%, transparent 34%),
+        radial-gradient(circle at 95% 90%, rgba(124, 58, 237, 0.07) 0%, transparent 34%),
+        linear-gradient(180deg, #ffffff 0%, #f8fafc 52%, #eef2f7 100%);
     background-attachment: fixed;
     line-height: 1.5;
 }
 
 header {
-    background: rgba(3, 7, 18, 0.85);
+    background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
     padding: 1.1rem 1.5rem;
     position: sticky;
     top: 0;
@@ -104,7 +105,7 @@ main {
     border-radius: 20px;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+    box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.8);
     transition: transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     position: relative;
     overflow: hidden;
@@ -121,7 +122,7 @@ main {
 }
 
 .card:hover {
-    border-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(14, 165, 233, 0.24);
 }
 
 .compact-card {
@@ -145,7 +146,7 @@ main {
     font-size: 0.7rem;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0;
 }
 
 .control-value {
@@ -163,7 +164,7 @@ main {
 }
 
 .mesocycle-strip span {
-    background: rgba(255, 255, 255, 0.025);
+    background: rgba(248, 250, 252, 0.9);
     border: 1px solid var(--border-color);
     border-radius: 10px;
     color: var(--text-secondary);
@@ -244,7 +245,7 @@ main {
 }
 
 .abc-card {
-    background: rgba(255, 255, 255, 0.022);
+    background: rgba(248, 250, 252, 0.9);
     border: 1px solid var(--border-color);
     border-radius: 14px;
     padding: 1rem;
@@ -283,7 +284,7 @@ main {
 }
 
 .dash-kpi {
-    background: rgba(255, 255, 255, 0.025);
+    background: rgba(248, 250, 252, 0.9);
     border: 1px solid var(--border-color);
     border-radius: 12px;
     min-width: 0;
@@ -322,7 +323,7 @@ main {
 }
 
 .nutrition-dashboard-grid > div {
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(248, 250, 252, 0.9);
     border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 0.9rem;
@@ -345,7 +346,7 @@ main {
 }
 
 .diet-score-box {
-    background: rgba(255, 255, 255, 0.025);
+    background: rgba(248, 250, 252, 0.9);
     border: 1px solid var(--border-color);
     border-radius: 12px;
     color: var(--text-secondary);
@@ -388,7 +389,7 @@ main {
 }
 
 .cheat-advice {
-    background: rgba(255, 255, 255, 0.025);
+    background: rgba(248, 250, 252, 0.9);
     border: 1px solid var(--border-color);
     border-radius: 12px;
     color: var(--text-secondary);
@@ -419,7 +420,7 @@ main {
 }
 
 .action-item {
-    background: rgba(255, 255, 255, 0.022);
+    background: rgba(248, 250, 252, 0.9);
     border: 1px solid var(--border-color);
     border-left: 4px solid var(--text-muted);
     border-radius: 12px;
@@ -458,7 +459,7 @@ nav {
     bottom: 0;
     left: 0;
     right: 0;
-    background: rgba(3, 7, 18, 0.92);
+    background: rgba(255, 255, 255, 0.94);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-top: 1px solid var(--border-color);
@@ -535,7 +536,7 @@ nav {
     transition: all 0.25s ease;
     width: 100%;
     font-size: 0.95rem;
-    letter-spacing: 0.5px;
+    letter-spacing: 0;
 }
 
 .btn-primary {
@@ -554,15 +555,15 @@ nav {
 }
 
 .btn-secondary {
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(248, 250, 252, 0.95);
     border: 1px solid var(--border-color);
     color: var(--text-secondary);
 }
 
 .btn-secondary:hover {
     color: var(--text-primary);
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.15);
+    background: rgba(239, 246, 255, 0.98);
+    border-color: rgba(14, 165, 233, 0.24);
 }
 
 /* Setup Form Styling */
@@ -571,7 +572,7 @@ nav {
     font-size: 1.8rem;
     font-weight: 800;
     margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, #fff, var(--text-secondary));
+    background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -591,7 +592,7 @@ nav {
 }
 
 .setup-row {
-    background: rgba(255, 255, 255, 0.01);
+    background: rgba(248, 250, 252, 0.9);
     border: 1px solid var(--border-color);
     border-radius: 14px;
     padding: 0.85rem 1.1rem;
@@ -618,7 +619,7 @@ nav {
 }
 
 .setup-input-wrapper input {
-    background: rgba(3, 7, 18, 0.8);
+    background: rgba(255, 255, 255, 0.95);
     border: 1px solid var(--border-color);
     color: var(--text-primary);
     padding: 0.5rem;
@@ -655,7 +656,7 @@ nav {
     font-family: var(--font-heading);
     font-size: 1.4rem;
     font-weight: 800;
-    letter-spacing: -0.5px;
+    letter-spacing: 0;
 }
 
 .workout-date {
@@ -675,7 +676,7 @@ nav {
     font-family: var(--font-heading);
     font-size: 1.15rem;
     font-weight: 700;
-    letter-spacing: -0.2px;
+    letter-spacing: 0;
 }
 
 .exercise-cat {
@@ -697,7 +698,7 @@ nav {
     align-items: center;
     gap: 0.3rem;
     font-weight: 600;
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(248, 250, 252, 0.9);
     padding: 0.25rem 0.6rem;
     border-radius: 8px;
     border: 1px solid var(--border-color);
@@ -722,7 +723,7 @@ nav {
 }
 
 .exercise-range-row span {
-    background: rgba(255, 255, 255, 0.025);
+    background: rgba(248, 250, 252, 0.9);
     border: 1px solid var(--border-color);
     border-radius: 100px;
     color: var(--text-muted);
@@ -742,7 +743,7 @@ nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: rgba(255, 255, 255, 0.015);
+    background: rgba(248, 250, 252, 0.9);
     border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 0.7rem 1rem;
@@ -793,7 +794,7 @@ nav {
 
 /* Buttons */
 .btn-edit-reps {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(248, 250, 252, 0.9);
     border: 1px solid var(--border-color);
     color: var(--text-secondary);
     border-radius: 8px;
@@ -808,12 +809,12 @@ nav {
 }
 
 .btn-edit-reps:hover {
-    background: rgba(255, 255, 255, 0.07);
+    background: rgba(239, 246, 255, 0.98);
     color: var(--text-primary);
 }
 
 .check-button {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.95);
     border: 2px solid var(--border-color);
     width: 38px;
     height: 38px;
@@ -859,14 +860,14 @@ nav {
 }
 
 .timer-circle-bg {
-    background: rgba(3, 7, 18, 0.95);
+    background: rgba(255, 255, 255, 0.96);
     backdrop-filter: blur(12px);
     border-radius: 50%;
     width: 100%;
     height: 100%;
     position: relative;
     border: 1px solid var(--border-color);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px var(--accent-cyan-glow);
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.16), 0 0 18px var(--accent-cyan-glow);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -895,7 +896,7 @@ nav {
     font-family: var(--font-timer);
     font-size: 1.15rem;
     font-weight: 700;
-    letter-spacing: 0.5px;
+    letter-spacing: 0;
     z-index: 2;
     color: var(--text-primary);
 }
@@ -906,7 +907,7 @@ nav {
     font-weight: 700;
     text-transform: uppercase;
     z-index: 2;
-    letter-spacing: 1px;
+    letter-spacing: 0;
 }
 
 /* Modales */
@@ -916,7 +917,7 @@ nav {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(2, 4, 10, 0.85);
+    background: rgba(15, 23, 42, 0.28);
     backdrop-filter: blur(6px);
     z-index: 200;
     display: flex;
@@ -934,7 +935,7 @@ nav {
 }
 
 .modal-content {
-    background: #090d16;
+    background: #ffffff;
     border: 1px solid var(--border-color);
     border-radius: 22px;
     padding: 1.8rem 1.5rem;
@@ -942,7 +943,7 @@ nav {
     max-width: 400px;
     transform: translateY(20px);
     transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 25px 50px rgba(15, 23, 42, 0.18);
 }
 
 .modal-overlay.active .modal-content {
@@ -972,7 +973,7 @@ nav {
 }
 
 .btn-num {
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(248, 250, 252, 0.95);
     border: 1px solid var(--border-color);
     color: var(--text-primary);
     width: 50px;
@@ -988,7 +989,7 @@ nav {
 
 .btn-num:active {
     transform: scale(0.9);
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(239, 246, 255, 0.98);
 }
 
 .num-display {
@@ -1028,7 +1029,7 @@ nav {
 
 .plan-pill,
 .plan-action {
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(248, 250, 252, 0.9);
     border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 0.7rem;
@@ -1069,7 +1070,7 @@ nav {
 }
 
 .volume-bar-wrapper {
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(248, 250, 252, 0.9);
     border: 1px solid var(--border-color);
     padding: 1rem;
     border-radius: 14px;
@@ -1100,12 +1101,12 @@ nav {
 }
 
 .volume-bar-bg {
-    background: rgba(3, 7, 18, 0.8);
+    background: #e2e8f0;
     height: 10px;
     border-radius: 100px;
     overflow: hidden;
     position: relative;
-    border: 1px solid rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(15, 23, 42, 0.06);
 }
 
 .volume-bar-fill {
@@ -1141,7 +1142,7 @@ nav {
 }
 
 .chart-select {
-    background: rgba(3, 7, 18, 0.86);
+    background: rgba(255, 255, 255, 0.95);
     border: 1px solid var(--border-color);
     border-radius: 10px;
     color: var(--text-primary);
@@ -1174,7 +1175,7 @@ nav {
 }
 
 .forecast-card {
-    background: rgba(255, 255, 255, 0.015);
+    background: rgba(248, 250, 252, 0.9);
     border: 1px dashed var(--border-color);
     border-radius: 14px;
     padding: 1rem;
@@ -1273,7 +1274,7 @@ nav {
 /* Dashboard de Dieta y Pasos */
 .dieta-selector {
     display: flex;
-    background: rgba(3, 7, 18, 0.6);
+    background: rgba(226, 232, 240, 0.7);
     border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 0.25rem;
@@ -1307,7 +1308,7 @@ nav {
 }
 
 .macro-box {
-    background: rgba(255, 255, 255, 0.015);
+    background: rgba(255, 255, 255, 0.96);
     border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 0.75rem 0.25rem;
@@ -1327,7 +1328,7 @@ nav {
     text-transform: uppercase;
     font-weight: 700;
     margin-top: 0.2rem;
-    letter-spacing: 0.5px;
+    letter-spacing: 0;
 }
 
 .macro-box.kcal .macro-val { color: var(--accent-cyan); }
@@ -1398,7 +1399,7 @@ nav {
 }
 
 .food-card {
-    background: rgba(255, 255, 255, 0.025);
+    background: rgba(255, 255, 255, 0.96);
     border: 1px solid var(--border-color);
     border-radius: 8px;
     display: grid;
@@ -1461,7 +1462,7 @@ nav {
 }
 
 .food-builder {
-    background: rgba(3, 7, 18, 0.38);
+    background: rgba(248, 250, 252, 0.92);
     border: 1px solid var(--border-color);
     border-radius: 8px;
     margin-top: 1.1rem;
@@ -1491,7 +1492,7 @@ nav {
 
 .food-meal-row {
     align-items: center;
-    background: rgba(255, 255, 255, 0.025);
+    background: rgba(255, 255, 255, 0.96);
     border: 1px solid var(--border-color);
     border-radius: 8px;
     display: grid;
@@ -1542,7 +1543,7 @@ nav {
 }
 
 .grams-input input {
-    background: rgba(3, 7, 18, 0.8);
+    background: rgba(255, 255, 255, 0.95);
     border: 1px solid var(--border-color);
     border-radius: 8px;
     color: var(--text-primary);
@@ -1619,7 +1620,7 @@ nav {
 
 .steps-input-group input {
     flex: 1;
-    background: rgba(3, 7, 18, 0.8);
+    background: rgba(255, 255, 255, 0.95);
     border: 1px solid var(--border-color);
     color: var(--text-primary);
     padding: 0.75rem;
@@ -1695,7 +1696,7 @@ nav {
 .summary-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(2, 4, 10, 0.86);
+    background: rgba(15, 23, 42, 0.28);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     display: flex;
@@ -1714,10 +1715,10 @@ nav {
 }
 
 .summary-card {
-    background: #090d16;
+    background: #ffffff;
     border: 1px solid var(--border-color);
     border-radius: 22px;
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 25px 60px rgba(15, 23, 42, 0.18);
     max-width: 460px;
     padding: 1.5rem;
     text-align: center;
@@ -1748,7 +1749,7 @@ nav {
 }
 
 .summary-list-item {
-    background: rgba(255, 255, 255, 0.025);
+    background: rgba(248, 250, 252, 0.9);
     border: 1px solid var(--border-color);
     border-radius: 12px;
     color: var(--text-secondary);
@@ -1797,7 +1798,7 @@ nav {
 
 .settings-field input,
 .settings-field select {
-    background: rgba(3, 7, 18, 0.8);
+    background: rgba(255, 255, 255, 0.95);
     border: 1px solid var(--border-color);
     border-radius: 10px;
     color: var(--text-primary);
